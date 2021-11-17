@@ -1,13 +1,13 @@
-#include "snake.h"
+#include "CSnake.h"
 
-Snake::Snake(CManager& inGraphics)
+CSnake::CSnake(CManager& inGraphics)
 {
 	//Allows CManager's renderer to be used
 	//graphics.getRenderer() to render
 	graphics = inGraphics;
 }
 //////////////////////////////////////////////////////////
-void Snake::spawn()
+void CSnake::spawn()
 {
 	//Make all snake parts empty
 	for (int i = 0; i < sizeof(snakeArr) / sizeof(snakeArr[0]); i++)
@@ -34,7 +34,7 @@ void Snake::spawn()
 	}
 }
 //////////////////////////////////////////////////////////
-void Snake::draw(bool& gameOver)
+void CSnake::draw(bool& gameOver)
 {
 	//Draw snake body
  	for (int i = 1; i < (sizeof(snakeArr) / sizeof(snakeArr[0])); i++)
@@ -69,11 +69,11 @@ void Snake::draw(bool& gameOver)
 	if (gameOver)
 	{
 		//Yellow flashies every now and again (not consistent?)
-		if (gameOverTicker >= 15)
+		if (gameOverTicker % 10 == 0)
 		{
 			SDL_SetRenderDrawColor(graphics.getRenderer(), 255, 255, 0, 255);//yellow
 			SDL_RenderFillRect(graphics.getRenderer(), &snakeArr[0]);
-			gameOverTicker = 0;
+			gameOverTicker = 1;
 		}
 		//Red if dead
 		else
@@ -91,7 +91,7 @@ void Snake::draw(bool& gameOver)
 	}
 }
 //////////////////////////////////////////////////////////
-void Snake::move(bool& gameOver)
+void CSnake::move(bool& gameOver)
 {
 	if (gameOver)
 	{
@@ -128,7 +128,7 @@ void Snake::move(bool& gameOver)
 	handleCollisions(gameOver);
 }
 //////////////////////////////////////////////////////////
-void Snake::changeDir(SDL_KeyCode newDir)
+void CSnake::changeDir(SDL_KeyCode newDir)
 {
 	//figure out currDir
 	int up = dy == -CELL_HEIGHT;
@@ -165,7 +165,7 @@ void Snake::changeDir(SDL_KeyCode newDir)
 	}
 }
 //////////////////////////////////////////////////////////
-void Snake::handleCollisions(bool &gameOver)
+void CSnake::handleCollisions(bool &gameOver)
 {
 	//Did it run into itself?
 	for (int i = 1; i < sizeof(snakeArr) / sizeof(snakeArr[0]); i++)

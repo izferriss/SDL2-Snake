@@ -1,17 +1,17 @@
 #pragma once
-#include "snake.h"
 #include "CManager.h"
 #include "CTexture.h"
+#include "CFood.h"
 
-class GameBoard
+class CBoard
 {
 public:
-	GameBoard() {};
-	GameBoard(CManager& inGraphics);
+	CBoard() {};
+	CBoard(CManager& inGraphics);
 	//Draws walls for the screen
 	void drawWalls();
 	//Handle input
-	void handleInput(Snake& player, bool &quitFlag);
+	void handleInput(CSnake& player, bool &quitFlag);
 	//Loads message to font texture
 	bool loadMessage(CTexture& gTextTexture, std::string& message);
 	//Gets score string
@@ -20,6 +20,7 @@ public:
 	int getScore() { return score; }
 	//Sets score
 	void setScore(int input) { score = input; }
+
 
 private:
 	//GraphicsMgr

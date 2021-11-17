@@ -1,12 +1,12 @@
 #pragma once
-#include "GameBoard.h"
+#include "CBoard.h"
 
-GameBoard::GameBoard(CManager& inGraphics)
+CBoard::CBoard(CManager& inGraphics)
 {
 	graphics = inGraphics;
 	scoreString = "Score: " + std::to_string(score);
 }
-void GameBoard::handleInput(Snake& player, bool &quitFlag)
+void CBoard::handleInput(CSnake& player, bool &quitFlag)
 {
 	//Event handler
 	SDL_Event e;
@@ -42,7 +42,7 @@ void GameBoard::handleInput(Snake& player, bool &quitFlag)
 	}//end event handler loop
 }
 //////////////////////////////////////////////////////////
-void GameBoard::drawWalls()
+void CBoard::drawWalls()
 {
 	//Define wall color
 	SDL_SetRenderDrawColor(graphics.getRenderer(), 210, 209, 205, 255); //gray
@@ -76,7 +76,7 @@ void GameBoard::drawWalls()
 	SDL_RenderFillRect(graphics.getRenderer(), &block);
 }
 //////////////////////////////////////////////////////////
-bool GameBoard::loadMessage(CTexture &gTextTexture, std::string& message)
+bool CBoard::loadMessage(CTexture &gTextTexture, std::string& message)
 {
 	//Loading success flag
 	bool success = true;
