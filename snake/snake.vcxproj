@@ -134,12 +134,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CFood.cpp" />
     <ClCompile Include="CManager.cpp" />
     <ClCompile Include="CTexture.cpp" />
-    <ClCompile Include="CBoard.cpp" />
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="CSnake.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2-2.0.16\lib\x86\SDL2.dll">
@@ -153,11 +151,9 @@
     <None Include="\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_ttf-2.0.15\lib\x86\zlib1.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CFood.h" />
     <ClInclude Include="CManager.h" />
     <ClInclude Include="CTexture.h" />
-    <ClInclude Include="CBoard.h" />
-    <ClInclude Include="CSnake.h" />
+    <ClInclude Include="game.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="..\..\..\..\..\..\WINDOWS\Fonts\ARIAL.TTF">

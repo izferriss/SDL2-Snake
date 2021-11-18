@@ -24,6 +24,8 @@ bool CManager::init()
 		{
 			//Create window
 			mWindow = SDL_CreateWindow("SDL Snake", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+			//Set window to borderless
+			SDL_SetWindowBordered(mWindow, SDL_FALSE);
 			if (mWindow == NULL)
 			{
 				//Error message and set flag

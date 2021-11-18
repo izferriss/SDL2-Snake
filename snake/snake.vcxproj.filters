@@ -24,13 +24,7 @@
     <ClCompile Include="CManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CFood.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CBoard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CSnake.cpp">
+    <ClCompile Include="game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -58,13 +52,7 @@
     <ClInclude Include="CManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CFood.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CBoard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CSnake.h">
+    <ClInclude Include="game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

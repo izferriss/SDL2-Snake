@@ -1,5 +1,5 @@
 #pragma once
-#include "CBoard.h"
+#include "game.h"
 
 /*////////////////////////////////////////////////////////
 // Variables /////////////////////////////////////////////
@@ -17,13 +17,7 @@ SDL_Window* gWindow;
 CTexture gTextTexture;
 
 //Initialize *AFTER* init() so that it can pull from CManager
-CSnake player;
-
-//Initialize *AFTER* init() so that it can pull from CManager
 CBoard game;
-
-//Initialize *AFTER* init() so that it can pull from CManager
-CFood food;
 
 /*////////////////////////////////////////////////////////
 // FLAGS /////////////////////////////////////////////////
@@ -43,16 +37,12 @@ int main(int argc, char* args[])
 	//Initialize CTexture
 	gTextTexture = CTexture(graphics);
 
-	//Initialize Snake
-	player = CSnake(graphics);
-	player.spawn();
-
 	//Initialize GameBoard
 	game = CBoard(graphics);
+	game.spawnSnake();
 
 	//Initialize food
-	food = CFood(graphics);
-	food.spawnFood(player);
+	game.spawnFood();
 
 	//Declare score
 	//int score = 0;
@@ -75,16 +65,16 @@ int main(int argc, char* args[])
 			SDL_RenderClear(graphics.getRenderer());
 
 			//Handle input
-			game.handleInput(player, quit);
+			game.handleInput(quit);
 
 			//Move snake
-			player.move(gameOver);
+			game.moveSnake(gameOver);
 
 			//Draw snake
-			player.draw(gameOver);
+			game.drawSnake(gameOver);
 
 			//Draw food
-			food.drawFood();
+			game.drawFood();
 
 			//Draw walls to screen edges
 			game.drawWalls();
