@@ -5,8 +5,18 @@ CBoard::CBoard(CManager& inGraphics)
 {
 	graphics = inGraphics;
 	updateScoreString();
+	updateFPSString(0);
+	Game_State state;
+	currState = 0;
+	state = NOT_PLAYING;
 }
-void CBoard::handleInput(bool &quitFlag)
+//////////////////////////////////////////////////////////
+void CBoard::setState(int inState)
+{
+	currState = inState;
+}
+//////////////////////////////////////////////////////////
+void CBoard::handleInput()
 {
 	//Event handler
 	SDL_Event e;
@@ -17,29 +27,78 @@ void CBoard::handleInput(bool &quitFlag)
 		//If quit event
 		if (e.type == SDL_QUIT || (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE))
 		{
-			quitFlag = true;
+			setState(QUIT);
 		}
-
-		if (e.type == SDL_KEYDOWN && (e.key.keysym.sym == SDLK_UP))
+		//Up / w
+		if (e.type == SDL_KEYDOWN && (e.key.keysym.sym == SDLK_UP || e.key.keysym.sym == SDLK_w))
 		{
+			// start the game when first arrow key is pressed
+			if (getState() == NOT_PLAYING)
+			{
+				setState(PLAYING);
+			}
 			changeDirSnake(SDLK_UP);
 		}
-
-		if (e.type == SDL_KEYDOWN && (e.key.keysym.sym == SDLK_DOWN))
+		//Down / s
+		if (e.type == SDL_KEYDOWN && (e.key.keysym.sym == SDLK_DOWN || e.key.keysym.sym == SDLK_s))
 		{
+			if (getState() == NOT_PLAYING)
+			{
+				setState(PLAYING);
+			}
 			changeDirSnake(SDLK_DOWN);
 		}
-
-		if (e.type == SDL_KEYDOWN && (e.key.keysym.sym == SDLK_LEFT))
+		//Left / a
+		if (e.type == SDL_KEYDOWN && (e.key.keysym.sym == SDLK_LEFT || e.key.keysym.sym == SDLK_a))
 		{
+			if (getState() == NOT_PLAYING)
+			{
+				setState(PLAYING);
+			}
 			changeDirSnake(SDLK_LEFT);
 		}
-
-		if (e.type == SDL_KEYDOWN && (e.key.keysym.sym == SDLK_RIGHT))
+		//Right / d
+		if (e.type == SDL_KEYDOWN && (e.key.keysym.sym == SDLK_RIGHT || e.key.keysym.sym == SDLK_d))
 		{
+			if (getState() == NOT_PLAYING)
+			{
+				setState(PLAYING);
+			}
 			changeDirSnake(SDLK_RIGHT);
 		}
+
+		// handle pause/unpause
+		if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_SPACE)
+		{
+			switch (currState)
+			{
+			case PAUSED:
+				setState(PLAYING);
+				break;
+			case PLAYING:
+				setState(PAUSED);
+				break;
+			case GAME_OVER:
+				playAgain();
+				break;
+			default:
+				break;
+			}
+		}
+
 	}//end event handler loop
+}
+//////////////////////////////////////////////////////////
+void CBoard::playAgain()
+{
+	snakeLength = DEFAULT_SNAKE_LENGTH;
+	spawnSnake();
+	changeDirSnake(SDLK_RIGHT);
+	spawnFood();
+	score = 0;
+	setScore(score);
+	updateScoreString();
+	currState = NOT_PLAYING;
 }
 //////////////////////////////////////////////////////////
 void CBoard::drawWalls()
@@ -81,11 +140,8 @@ bool CBoard::loadMessage(CTexture &gTextTexture, std::string& message)
 	//Loading success flag
 	bool success = true;
 
-	//Open the font
-	gFont = TTF_OpenFont("font/arial.ttf", 16);
-
 	{
-		if (gFont == NULL)
+		if (graphics.getFont() == NULL)
 		{
 			printf("Failed to load Arial font! SDL_ttf Error: %s\n", TTF_GetError());
 			success = false;
@@ -93,7 +149,7 @@ bool CBoard::loadMessage(CTexture &gTextTexture, std::string& message)
 		else
 		{
 			//Render text
-			if (!gTextTexture.loadFromRenderedText(gFont, message, { 0xFF,0xFF,0xFF,0xFF }))
+			if (!gTextTexture.loadFromRenderedText(graphics.getFont(), message, { 0xFF,0xFF,0xFF,0xFF }))
 			{
 				printf("Failed to render text texture!\n");
 				success = false;
@@ -102,6 +158,7 @@ bool CBoard::loadMessage(CTexture &gTextTexture, std::string& message)
 
 		return success;
 	}
+
 }
 //////////////////////////////////////////////////////////
 void CBoard::updateScoreString()
@@ -150,6 +207,8 @@ void CBoard::drawFood()
 //////////////////////////////////////////////////////////
 void CBoard::spawnSnake()
 {
+	dirCanChange = true;
+
 	//Make all snake parts empty
 	for (int i = 0; i < sizeof(snakeArr) / sizeof(snakeArr[0]); i++)
 	{
@@ -160,6 +219,8 @@ void CBoard::spawnSnake()
 	}
 
 	//The first element in the array is the head
+	snakeHead.x = SNAKE_START_X;
+	snakeHead.y = SNAKE_START_Y;
 	snakeArr[0].x = SNAKE_START_X;
 	snakeArr[0].y = SNAKE_START_Y;
 	snakeArr[0].w = CELL_WIDTH;
@@ -175,7 +236,7 @@ void CBoard::spawnSnake()
 	}
 }
 //////////////////////////////////////////////////////////
-void CBoard::drawSnake(bool& gameOver)
+void CBoard::drawSnake()
 {
 	//Draw snake body
 	for (int i = 1; i < (sizeof(snakeArr) / sizeof(snakeArr[0])); i++)
@@ -187,7 +248,7 @@ void CBoard::drawSnake(bool& gameOver)
 		}
 
 		//Color differently if game over
-		if (gameOver)
+		if (currState == GAME_OVER)
 		{
 			//Red if dead
 			SDL_SetRenderDrawColor(graphics.getRenderer(), 255, 0, 0, 255);//red
@@ -207,7 +268,7 @@ void CBoard::drawSnake(bool& gameOver)
 
 	//Draw snake head
 	//Color differently if game over
-	if (gameOver)
+	if (currState == GAME_OVER)
 	{
 		//Yellow flashies every now and again (not consistent?)
 		if (gameOverTicker % 10 == 0)
@@ -232,37 +293,71 @@ void CBoard::drawSnake(bool& gameOver)
 	}
 }
 //////////////////////////////////////////////////////////
-void CBoard::moveSnake(bool& gameOver)
+void CBoard::moveSnake()
 {
-	if (gameOver)
+
+	//Don't move if not playing
+	if (currState != PLAYING)
 	{
 		return;
 	}
 
+	//Get next position for input handling
+	snakeHead.x += snakeDX;
+	snakeHead.y += snakeDY;
+
+	//Did snake head enter a new cell? check against first member of snakeArr
+	int oldX = (int)round(snakeArr[0].x / CELL_WIDTH) * CELL_WIDTH;
+	int newX = (int)round(snakeHead.x / CELL_WIDTH) * CELL_WIDTH;
+	int oldY = (int)round(snakeArr[0].y / CELL_HEIGHT) * CELL_HEIGHT;
+	int newY = (int)round(snakeHead.y / CELL_HEIGHT) * CELL_HEIGHT;
+	 
+	if (oldX == newX && oldY == newY)
+	{
+		//Snake hasn't actually moved yet -- ignore input
+		return;
+	}
+
 	//shift all elements right to make room for new head at the beginning
-	for (int i = sizeof(snakeArr) / sizeof(snakeArr[0]) - 1; i >= 0; i--)
+	for (int i = snakeLength - 1; i >= 0; i--)
 	{
 		snakeArr[i] = snakeArr[i - 1];
 	}
 
-
 	//insert the head's new position at the beginning of snakeArr
-	snakeArr[0].x = snakeArr[1].x + snakeDX;
-	snakeArr[0].y = snakeArr[1].y + snakeDY;
+	snakeArr[0].x = newX;
+	snakeArr[0].y = newY;
 	snakeArr[0].w = CELL_WIDTH;
 	snakeArr[0].h = CELL_HEIGHT;
 
+	//If snake head interacts with food
 	if (food.x == snakeArr[0].x && food.y == snakeArr[0].y)
 	{
+		//Spawn new food
 		spawnFood();
+
+		//Update snakeLength
+		snakeLength++;
+
+		//Increase snakeSpeed
+		snakeSpeed += .1f;
+
+		//Update score int
 		setScore(score += 1);
+
+		//Update score string
 		updateScoreString();
+
+		//Compare hiScore
+		compareScores();
+
 	}
+	//Move the snake
 	else
 	{
 		//remove tail by finding the last inactive element in snakeArr
 		//then zero out the one before it
-		for (int i = DEFAULT_SNAKE_LENGTH; i < sizeof(snakeArr) / sizeof(snakeArr[0]); i++)
+		for (int i = snakeLength; i < snakeLength; i++)
 		{
 			if (snakeArr[i].w == 0)
 			{
@@ -273,49 +368,65 @@ void CBoard::moveSnake(bool& gameOver)
 				break;
 			}
 		}
+
+		dirCanChange = true;
+		if (skippedDir != SDLK_ESCAPE)
+		{
+			changeDirSnake(skippedDir);
+			skippedDir = SDLK_ESCAPE;
+		}
 	}
 
-	handleCollisions(gameOver);
+	handleCollisions();
 }
 //////////////////////////////////////////////////////////
 void CBoard::changeDirSnake(SDL_KeyCode newDir)
 {
 	//figure out currDir
-	int up = snakeDY == -CELL_HEIGHT;
-	int down = snakeDY == CELL_HEIGHT;
-	int left = snakeDX == -CELL_WIDTH;
-	int right = snakeDX == CELL_WIDTH;
+	int up = snakeDY == -snakeSpeed;
+	int down = snakeDY == snakeSpeed;
+	int left = snakeDX == -snakeSpeed;
+	int right = snakeDX == snakeSpeed;
 
+	if (!dirCanChange)
+	{
+		skippedDir = newDir;
+		return;
+	}
 	//change to up if not going down
 	if (newDir == SDLK_UP && !down)
 	{
 		snakeDX = 0;
-		snakeDY = -CELL_HEIGHT;
+		snakeDY = -snakeSpeed;
+		dirCanChange = false;
 	}
 
 	//change do down if not going up
 	if (newDir == SDLK_DOWN && !up)
 	{
 		snakeDX = 0;
-		snakeDY = CELL_HEIGHT;
+		snakeDY = snakeSpeed;
+		dirCanChange = false;
 	}
 
 	//change to left if not going right
 	if (newDir == SDLK_LEFT && !right)
 	{
-		snakeDX = -CELL_WIDTH;
+		snakeDX = -snakeSpeed;
 		snakeDY = 0;
+		dirCanChange = false;
 	}
 
 	//change to right if not going left
 	if (newDir == SDLK_RIGHT && !left)
 	{
-		snakeDX = CELL_WIDTH;
+		snakeDX = snakeSpeed;
 		snakeDY = 0;
+		dirCanChange = false;
 	}
 }
 //////////////////////////////////////////////////////////
-void CBoard::handleCollisions(bool &gameOver)
+void CBoard::handleCollisions()
 {
 	//Did it run into itself?
 	for (int i = 1; i < sizeof(snakeArr) / sizeof(snakeArr[0]); i++)
@@ -325,17 +436,86 @@ void CBoard::handleCollisions(bool &gameOver)
 		{
 			break;
 		}
-		//check if the head has not run into active body elements
+		//check if the head has run into active body elements
 		if (snakeArr[0].x == snakeArr[i].x && snakeArr[0].y == snakeArr[i].y)
 		{
-			gameOver = true;
+			setState(GAME_OVER);
+			compareScores();
+			writeHighScore();
 			return;
 		}
 
 		//Did it hit a wall?
-		if ((snakeArr[0].x <= WALL_THICKNESS) || (snakeArr[0].x >= SCREEN_WIDTH - WALL_THICKNESS - CELL_WIDTH) || (snakeArr[0].y <= (WALL_THICKNESS * 2)) || (snakeArr[0].y >= SCREEN_HEIGHT - WALL_THICKNESS - CELL_HEIGHT))
+		if ((snakeArr[0].x <= WALL_THICKNESS - 1) || (snakeArr[0].x >= SCREEN_WIDTH - WALL_THICKNESS + 1) || (snakeArr[0].y <= (WALL_THICKNESS * 2) - 1) || (snakeArr[0].y >= SCREEN_HEIGHT - WALL_THICKNESS + 1))
 		{
-			gameOver = true;
+			setState(GAME_OVER);
+			compareScores();
+			writeHighScore();
+			return;
 		}
 	}
+}
+//////////////////////////////////////////////////////////
+void CBoard::updateFPSString(float fps)
+{
+	fpsString = "FPS: " + std::to_string(fps);
+}
+//////////////////////////////////////////////////////////
+void CBoard::compareScores()
+{
+	if (score > highScore)
+	{
+		setHighScore(score);
+	}
+	else
+	{
+		//do nothing
+	}
+}
+//////////////////////////////////////////////////////////
+void CBoard::getHighScore()
+{
+	std::ifstream myfile(hiScoreFile);
+	if (!myfile)
+	{
+		printf("\"%s\" could not be opened!", hiScoreFile);
+		setState(QUIT);
+
+	}
+	else
+	{
+		while (myfile >> highScore)
+		{
+			setHighScore(highScore);
+		}
+
+		myfile.close();
+	}
+}
+//////////////////////////////////////////////////////////
+void CBoard::setHighScore(int inHighScore)
+{
+	highScore = inHighScore;
+}
+//////////////////////////////////////////////////////////
+void CBoard::writeHighScore()
+{
+	std::ofstream myfile(hiScoreFile, std::ofstream::trunc);
+	if (!myfile)
+	{
+		printf("\"%s\" could not be opened!", hiScoreFile);
+		setState(QUIT);
+
+	}
+	else
+	{
+		myfile << highScore;
+		myfile.close();
+	}
+}
+//////////////////////////////////////////////////////////
+std::string CBoard::getHighScoreString()
+{
+	highScoreString = "High Score: " + std::to_string(highScore);
+	return highScoreString;
 }

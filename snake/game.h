@@ -5,12 +5,14 @@
 class CBoard
 {
 public:
+	//Initialize variables
 	CBoard() {};
+	//Initialize variables (with graphics)
 	CBoard(CManager& inGraphics);
 	//Draws walls for the screen
 	void drawWalls();
 	//Handle input
-	void handleInput(bool &quitFlag);
+	void handleInput();
 	//Loads message to font texture
 	bool loadMessage(CTexture& gTextTexture, std::string& message);
 	//Gets score string
@@ -21,17 +23,40 @@ public:
 	void setScore(int input) { score = input; }
 	//Update score string
 	void updateScoreString();
+	//Update fps string
+	void updateFPSString(float fps);
+	//Get fps string
+	std::string getFPSString() { return fpsString; }
 	//Spawns food
 	void spawnFood();
 	//Draws food
 	void drawFood();
-	//Food accessor
+	//Spawn snake
 	void spawnSnake();
-	void drawSnake(bool& gameOver);
-	void moveSnake(bool& gameOver);
+	//Draw snake
+	void drawSnake();
+	//Move snake
+	void moveSnake();
+	//Snake changes direction
 	void changeDirSnake(SDL_KeyCode newDir);
-	void handleCollisions(bool& gameOver);
-
+	//Handle collisions
+	void handleCollisions();
+	//Get state
+	int getState() { return currState; }
+	//Set state
+	void setState(int inState);
+	//Restart game
+	void playAgain();
+	//Read from hiscore.dat and assign highscore
+	void getHighScore();
+	//Compare hiscores
+	void compareScores();
+	//Set highscore var
+	void setHighScore(int inHighScore);
+	//Write highscore to hiscore.dat
+	void writeHighScore();
+	//Get highscore string
+	std::string getHighScoreString();
 private:
 	//GraphicsMgr
 	CManager graphics;
@@ -39,39 +64,42 @@ private:
 	int score = 0;
 	//Score string
 	std::string scoreString;
-	//SDL Font placeholder
-	TTF_Font* gFont = NULL;
+	//FPS string
+	std::string fpsString;
 
+	//High score
+	int highScore;
+	std::string hiScoreFile = "hiscore.dat";
+	std::string highScoreString;
 
+	//Food variables
 	SDL_Rect food;
 	int foodW = CELL_WIDTH;
 	int foodH = CELL_HEIGHT;
 
+	//Snake variables
+	SDL_FPoint snakeHead;
 	SDL_Rect snakeArr[CELL_COUNT];
-	int snakeDX = CELL_WIDTH;
-	int snakeDY = 0;
+	float snakeSpeed = .75f;
+	float snakeDX = CELL_WIDTH;
+	float snakeDY = 0;
+	bool dirCanChange = true;
+	int snakeLength = DEFAULT_SNAKE_LENGTH;
+	SDL_KeyCode skippedDir;
+	
 
+	//Ticker for death aesthetics
 	int gameOverTicker = 0;
 
-};
-/*
-class CSnake
-{
-public:
-	void spawn();
-	void draw(bool& gameOver);
-	void move(bool& gameOver, CBoard game, CSnake player);
-	void changeDir(SDL_KeyCode newDir);
-	void handleCollisions(bool& gameOver);
-	//Get location of snake head
-	SDL_Rect snakeHead() { return snakeArr[0]; }
+	int currState;
 
-
-	//Public for food workaround... 
-	SDL_Rect snakeArr[CELL_COUNT];
-
-private:
+	typedef enum Game_State {
+		NOT_PLAYING = 0,
+		PLAYING = 1,
+		PAUSED = 2,
+		GAME_OVER = 3,
+		QUIT = 4
+	} Game_State;
 
 };
-*/
 

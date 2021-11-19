@@ -77,6 +77,10 @@
     <IncludePath>\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_image-2.0.5\include;\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_ttf-2.0.15\include;\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2-2.0.16\include;$(IncludePath)</IncludePath>
     <LibraryPath>\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_image-2.0.5\lib\x86;\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_ttf-2.0.15\lib\x86;\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2-2.0.16\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2-2.0.16\include;\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_ttf-2.0.15\include;\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_image-2.0.5\include;$(IncludePath)</IncludePath>
+    <LibraryPath>\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_image-2.0.5\lib\x86;\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_ttf-2.0.15\lib\x86;\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2-2.0.16\lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -116,6 +120,9 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <PreventDllBinding>
+      </PreventDllBinding>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -142,13 +149,21 @@
   <ItemGroup>
     <None Include="\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2-2.0.16\lib\x86\SDL2.dll">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <DeploymentContent>false</DeploymentContent>
     </None>
     <None Include="\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_image-2.0.5\lib\x86\SDL2_image.dll">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <DeploymentContent>false</DeploymentContent>
     </None>
-    <None Include="\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_ttf-2.0.15\lib\x86\libfreetype-6.dll" />
-    <None Include="\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_ttf-2.0.15\lib\x86\SDL2_ttf.dll" />
-    <None Include="\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_ttf-2.0.15\lib\x86\zlib1.dll" />
+    <None Include="\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_ttf-2.0.15\lib\x86\libfreetype-6.dll">
+      <DeploymentContent>false</DeploymentContent>
+    </None>
+    <None Include="\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_ttf-2.0.15\lib\x86\SDL2_ttf.dll">
+      <DeploymentContent>false</DeploymentContent>
+    </None>
+    <None Include="\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_ttf-2.0.15\lib\x86\zlib1.dll">
+      <DeploymentContent>false</DeploymentContent>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CManager.h" />
@@ -158,6 +173,7 @@
   <ItemGroup>
     <Font Include="..\..\..\..\..\..\WINDOWS\Fonts\ARIAL.TTF">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <DeploymentContent>false</DeploymentContent>
     </Font>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

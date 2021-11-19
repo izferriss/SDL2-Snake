@@ -29,6 +29,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_ttf-2.0.15\lib\x86\libfreetype-6.dll">
+      <Filter>Resource Files</Filter>
+    </None>
     <None Include="\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2-2.0.16\lib\x86\SDL2.dll">
       <Filter>Resource Files</Filter>
     </None>
@@ -39,9 +42,6 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_ttf-2.0.15\lib\x86\zlib1.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_ttf-2.0.15\lib\x86\libfreetype-6.dll">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

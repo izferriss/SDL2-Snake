@@ -62,6 +62,8 @@ bool CTexture::loadFromFile(std::string path)
 
 	//Return success
 	mTexture = newTexture;
+
+
 	return mTexture != NULL;
 }
 //////////////////////////////////////////////////////////
@@ -105,8 +107,11 @@ int CTexture::getHeight()
 //////////////////////////////////////////////////////////
 bool CTexture::loadFromRenderedText(TTF_Font* gFont, std::string textureText, SDL_Color textColor)
 {
+
 	//Render text surface
-	SDL_Surface* textSurface = TTF_RenderText_Solid(gFont, textureText.c_str(), textColor);
+	SDL_Surface* textSurface = TTF_RenderText_Blended(gFont, textureText.c_str(), textColor);
+
+
 	if (textSurface == NULL)
 	{
 		printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
@@ -121,6 +126,9 @@ bool CTexture::loadFromRenderedText(TTF_Font* gFont, std::string textureText, SD
 		}
 		else
 		{
+			//Free surface
+			SDL_FreeSurface(textSurface);
+
 			//Get image dimensions
 			mWidth = textSurface->w;
 			mHeight = textSurface->h;

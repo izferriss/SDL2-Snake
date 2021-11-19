@@ -14,17 +14,17 @@ SDL_Renderer* gRenderer;
 SDL_Window* gWindow;
 
 //Initialize *AFTER* init() so that it can pull from CManager
-CTexture gTextTexture;
+CTexture gScoreTextTexture;
+CTexture gHiScoreTextTexture;
+CTexture gFPSTextTexture;
 
 //Initialize *AFTER* init() so that it can pull from CManager
 CBoard game;
 
-/*////////////////////////////////////////////////////////
-// FLAGS /////////////////////////////////////////////////
-////////////////////////////////////////////////////////*/
+std::string score;
+std::string fps;
+std::string hiScore;
 
-bool quit = false;
-bool gameOver = false;
 
 /*////////////////////////////////////////////////////////
 // MAIN PROGRAM //////////////////////////////////////////
@@ -34,8 +34,10 @@ int main(int argc, char* args[])
 	//Initialize SDL
 	graphics.init();
 
-	//Initialize CTexture
-	gTextTexture = CTexture(graphics);
+	//Initialize text textures
+	gScoreTextTexture = CTexture(graphics);
+	gHiScoreTextTexture = CTexture(graphics);
+	gFPSTextTexture = CTexture(graphics);
 
 	//Initialize GameBoard
 	game = CBoard(graphics);
@@ -44,53 +46,88 @@ int main(int argc, char* args[])
 	//Initialize food
 	game.spawnFood();
 
-	//Declare score
-	//int score = 0;
-	//std::string scoreString = "Score: " + std::to_string(score);
+	//Get highscore
+	game.getHighScore();
 
-	//While the application is running
-	while (!quit)
+	//While not QUIT
+	while (game.getState() != 4)
 	{
-		std::string score = game.getScoreString();
+		score = game.getScoreString();
+		fps = game.getFPSString();
+		hiScore = game.getHighScoreString();
 
-		if (!game.loadMessage(gTextTexture, score))
+		Uint64 start = SDL_GetPerformanceCounter();
+
+		if (!game.loadMessage(gScoreTextTexture, score))
 		{
-			printf("Failed to load media!\n");
-			quit = true;
+			printf("Failed to load score texture!\n");
+			game.setState(4);
 		}
 		else
 		{
-			//Clear screen to black
-			SDL_SetRenderDrawColor(graphics.getRenderer(), 0, 0, 0, 255);
-			SDL_RenderClear(graphics.getRenderer());
+			if (!game.loadMessage(gFPSTextTexture, fps))
+			{
+				printf("Failed to load FPS texture!\n");
+				game.setState(4);
+			}
 
-			//Handle input
-			game.handleInput(quit);
+			else
+			{
+				if (!game.loadMessage(gHiScoreTextTexture, hiScore))
+				{
+					printf("Failed to load hiScore texture!\n");
+					game.setState(4);
+				}
+				else
+				{
+					//Clear screen to black
+					SDL_SetRenderDrawColor(graphics.getRenderer(), 0, 0, 0, 255);
+					SDL_RenderClear(graphics.getRenderer());
 
-			//Move snake
-			game.moveSnake(gameOver);
+					//Handle input
+					game.handleInput();
 
-			//Draw snake
-			game.drawSnake(gameOver);
+					//Move snake
+					game.moveSnake();
 
-			//Draw food
-			game.drawFood();
+					//Draw snake
+					game.drawSnake();
 
-			//Draw walls to screen edges
-			game.drawWalls();
+					//Draw food
+					game.drawFood();
 
-			//Draw score
-			gTextTexture.render((SCREEN_WIDTH / 2), 1, NULL, 0, NULL, SDL_FLIP_NONE);
+					//Draw walls to screen edges
+					game.drawWalls();
 
-			//Render to screen
-			SDL_RenderPresent(graphics.getRenderer());
+					//Draw score
+					gScoreTextTexture.render(CELL_WIDTH, 1, NULL, 0, NULL, SDL_FLIP_NONE);
 
-			//wait 100ms before next loop iteration
-			SDL_Delay(100);
+					//Draw hiScore
+					gHiScoreTextTexture.render(SCREEN_WIDTH / 2, 1, NULL, 0, NULL, SDL_FLIP_NONE);
+
+					//Draw fps
+					gFPSTextTexture.render(SCREEN_WIDTH - (CELL_WIDTH * 8), 1, NULL, 0, NULL, SDL_FLIP_NONE);
+
+					//Render to screen
+					SDL_RenderPresent(graphics.getRenderer());
+
+					//Time since work done
+					Uint64 end = SDL_GetPerformanceCounter();
+					float elapsed = (end - start) / (float)SDL_GetPerformanceFrequency();
+					game.updateFPSString(1.0f / elapsed);
+
+					gScoreTextTexture.free();
+					gFPSTextTexture.free();
+					gHiScoreTextTexture.free();
+				}
+			}
 		}
 	}
 
-	//Clean up program and quit
-	graphics.exit();
+	if (game.getState() == 4)
+	{
+		//Clean up program and quit
+		graphics.exit();
+	}
 	return 0;
 }
