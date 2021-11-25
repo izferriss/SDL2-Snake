@@ -7,6 +7,7 @@
 #include <string>
 #include <cmath>
 #include <fstream>
+#include <ctime>
 
 
 const int TARGET_FPS = 60;

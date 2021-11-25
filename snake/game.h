@@ -85,7 +85,7 @@ private:
 	float snakeDY = 0;
 	bool dirCanChange = true;
 	int snakeLength = DEFAULT_SNAKE_LENGTH;
-	SDL_KeyCode skippedDir;
+	SDL_KeyCode skippedDir{};
 	
 
 	//Ticker for death aesthetics

@@ -1,4 +1,4 @@
 ﻿  game.cpp
-\\sgrstore1\users\iferriss\documents\visual studio 2017\projects\sdl_snake\snake\game.cpp(481): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'std::string'
-\\sgrstore1\users\iferriss\documents\visual studio 2017\projects\sdl_snake\snake\game.cpp(506): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'std::string'
-  snake.vcxproj -> \\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\Projects\SDL_Snake\Debug\snake.exe
+C:\Users\ferri\Documents\Visual Studio 2022\Projects\SDL_Snake\snake\game.cpp(500,10): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'std::string'
+C:\Users\ferri\Documents\Visual Studio 2022\Projects\SDL_Snake\snake\game.cpp(525,10): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'std::string'
+  snake.vcxproj -> C:\Users\ferri\Documents\Visual Studio 2022\Projects\SDL_Snake\Debug\snake.exe

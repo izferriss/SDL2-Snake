@@ -6,9 +6,12 @@ CBoard::CBoard(CManager& inGraphics)
 	graphics = inGraphics;
 	updateScoreString();
 	updateFPSString(0);
-	Game_State state;
+	Game_State state{};
 	currState = 0;
 	state = NOT_PLAYING;
+
+	//Seed random with currTime
+	srand((unsigned)time(0));
 }
 //////////////////////////////////////////////////////////
 void CBoard::setState(int inState)
@@ -107,7 +110,7 @@ void CBoard::drawWalls()
 	SDL_SetRenderDrawColor(graphics.getRenderer(), 210, 209, 205, 255); //gray
 
 	//Rectangle for drawing
-	SDL_Rect block;
+	SDL_Rect block{};
 
 	//left wall
 	//x = left edge, y = top edge
@@ -176,10 +179,26 @@ void CBoard::spawnFood()
 	food.x = (rand() % (((SCREEN_WIDTH - CELL_WIDTH - WALL_THICKNESS) / CELL_WIDTH) + 1)*CELL_WIDTH);
 	food.y = (rand() % (((SCREEN_HEIGHT - CELL_HEIGHT - WALL_THICKNESS) / CELL_HEIGHT) + 1)*CELL_HEIGHT);
 
-	//Account for top wall difference
+	//Account for placement within walls
+	//Top wall
 	if (food.y < (WALL_THICKNESS * 2))
 	{
 		food.y = (WALL_THICKNESS * 2);
+	}
+	//Bottom wall
+	if (food.y > SCREEN_HEIGHT-WALL_THICKNESS)
+	{
+		food.y = SCREEN_HEIGHT - WALL_THICKNESS - CELL_HEIGHT;
+	}
+	//Left wall
+	if (food.x < WALL_THICKNESS)
+	{
+		food.x = WALL_THICKNESS;
+	}
+	//Right wall
+	if (food.x > SCREEN_WIDTH - WALL_THICKNESS)
+	{
+		food.x = SCREEN_WIDTH - WALL_THICKNESS - CELL_WIDTH;
 	}
 
 	//Only spawn food if it does not touch the snake

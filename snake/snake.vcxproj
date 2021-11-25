@@ -22,32 +22,32 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{AE1AF243-3D8C-4598-B37D-248F3E1469F4}</ProjectGuid>
     <RootNamespace>snake</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -70,12 +70,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_image-2.0.5\include;\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_ttf-2.0.15\include;\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2-2.0.16\include;$(IncludePath)</IncludePath>
-    <LibraryPath>\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_image-2.0.5\lib\x86;\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_ttf-2.0.15\lib\x86;\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2-2.0.16\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\ferri\Documents\Visual Studio 2022\External Libraries\SDL2-2.0.16\include;C:\Users\ferri\Documents\Visual Studio 2022\External Libraries\SDL2_ttf-2.0.15\include;C:\Users\ferri\Documents\Visual Studio 2022\External Libraries\SDL2_image-2.0.5\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\ferri\Documents\Visual Studio 2022\External Libraries\SDL2-2.0.16\lib\x86;C:\Users\ferri\Documents\Visual Studio 2022\External Libraries\SDL2_ttf-2.0.15\lib\x86;C:\Users\ferri\Documents\Visual Studio 2022\External Libraries\SDL2_image-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_image-2.0.5\include;\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_ttf-2.0.15\include;\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2-2.0.16\include;$(IncludePath)</IncludePath>
-    <LibraryPath>\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_image-2.0.5\lib\x86;\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_ttf-2.0.15\lib\x86;\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2-2.0.16\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\ferri\Documents\Visual Studio 2022\External Libraries\SDL2_image-2.0.5\include;C:\Users\ferri\Documents\Visual Studio 2022\External Libraries\SDL2_ttf-2.0.15\include;C:\Users\ferri\Documents\Visual Studio 2022\External Libraries\SDL2-2.0.16\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\ferri\Documents\Visual Studio 2022\External Libraries\SDL2-2.0.16\lib\x64;C:\Users\ferri\Documents\Visual Studio 2022\External Libraries\SDL2_ttf-2.0.15\lib\x64;C:\Users\ferri\Documents\Visual Studio 2022\External Libraries\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2-2.0.16\include;\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_ttf-2.0.15\include;\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2_image-2.0.5\include;$(IncludePath)</IncludePath>
@@ -91,7 +91,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>\\sgrstore1\Users\iferriss\Documents\Visual Studio 2017\SDL2\SDL2-2.0.16\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

@@ -1,1 +1,9 @@
-﻿x64\Debug\CManager.obj : fatal error LNK1112: module machine type 'x64' conflicts with target machine type 'x86'
+﻿  CManager.cpp
+  CTexture.cpp
+  game.cpp
+C:\Users\ferri\Documents\Visual Studio 2022\Projects\SDL_Snake\snake\game.cpp(481,10): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'std::string'
+C:\Users\ferri\Documents\Visual Studio 2022\Projects\SDL_Snake\snake\game.cpp(506,10): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'std::string'
+  main.cpp
+  Generating Code...
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(1087,5): error MSB6006: "link.exe" exited with code 1112.
+x64\Debug\CManager.obj : fatal error LNK1112: module machine type 'x64' conflicts with target machine type 'x86'
